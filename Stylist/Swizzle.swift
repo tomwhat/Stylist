@@ -24,17 +24,17 @@ extension UIView {
 
         if self !== UIView.self { return }
 
-        let originalSelector = #selector(willMove(toSuperview:))
-        let swizzledSelector = #selector(stylist_willMove(toSuperview:))
+        let originalSelector = #selector(didMoveToSuperview)
+        let swizzledSelector = #selector(stylist_didMoveToSuperview)
 
         let originalMethod = class_getInstanceMethod(UIView.self, originalSelector)
         let swizzledMethod = class_getInstanceMethod(UIView.self, swizzledSelector)
         method_exchangeImplementations(originalMethod!, swizzledMethod!)
     }
 
-    @objc func stylist_willMove(toSuperview: UIView?) {
-        stylist_willMove(toSuperview: toSuperview)
-        if toSuperview != nil {
+    @objc func stylist_didMoveToSuperview() {
+        stylist_didMoveToSuperview()
+        if self.superview != nil {
             Stylist.shared.style(self)
         }
     }

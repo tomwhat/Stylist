@@ -185,7 +185,6 @@ class StylistTests: XCTestCase {
             \(customViewClassName).blueBack:
                 backgroundColor: blue
         """)
-
         let container = UIView()
         let button = UIButton()
         let view = UIView()
@@ -212,6 +211,40 @@ class StylistTests: XCTestCase {
         XCTAssertEqual(button.backgroundColor, .blue)
         XCTAssertEqual(view.backgroundColor, nil)
         XCTAssertEqual(customView.backgroundColor, .blue)
+    }
+    
+    func testChangeViewHierarchy() throws {
+        let theme = try Theme(string: """
+        styles:
+            UILabel:
+                textColor: blue
+            UICollectionViewCell UILabel:
+                textColor: green
+            UITableViewCell UILabel:
+                textColor: red
+        """)
+        let container = UIView()
+        let label = UILabel()
+        let collectionCell = UICollectionViewCell()
+        let tableCell = UITableViewCell()
+        
+        Stylist.shared.addTheme(theme, name: "theme")
+        
+        container.addSubview(label)
+        container.addSubview(collectionCell)
+        container.addSubview(tableCell)
+        
+        XCTAssertEqual(label.textColor, .blue)
+        
+        label.removeFromSuperview()
+        collectionCell.addSubview(label)
+        
+        XCTAssertEqual(label.textColor, .green)
+        
+        label.removeFromSuperview()
+        tableCell.addSubview(label)
+        
+        XCTAssertEqual(label.textColor, .red)
     }
 
     func testStyleSelectorFiltering() throws {
