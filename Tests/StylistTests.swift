@@ -185,6 +185,7 @@ class StylistTests: XCTestCase {
             \(customViewClassName).blueBack:
                 backgroundColor: blue
         """)
+                              
         let container = UIView()
         let button = UIButton()
         let view = UIView()
@@ -223,6 +224,7 @@ class StylistTests: XCTestCase {
             UITableViewCell UILabel:
                 textColor: red
         """)
+                              
         let container = UIView()
         let label = UILabel()
         let collectionCell = UICollectionViewCell()
